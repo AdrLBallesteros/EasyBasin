@@ -1,0 +1,13 @@
+[general]
+name= EasyBasin v3
+qgisMinimumVersion=3.20
+qgisMaximumVersion=3.99
+description= EasyBasin es un complemento de QGIS para la delimitación de cuencas hidrográficas.	
+about=EasyBasin es un complemento de QGIS para la delimitación de cuencas hidrográficas y la obtención del caudal máximo anual mediante el método racional descrito en la norma 5.2-IC DRENAJE SUPERFICIAL.	
+category=Tool
+author= https://github.com/AdrLBallesteros
+email= alopez6@ucam.edu
+tags=hydrology, modeling, watershed
+icon= images/icon.png
+version=3
+experimental=False

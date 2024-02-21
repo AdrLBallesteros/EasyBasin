@@ -1,0 +1,21 @@
+<RCC>
+  <qresource prefix="imgBase">
+    <file>../images/map.png</file>
+    <file>../images/arrow-fork.png</file>
+    <file>../images/save.png</file>
+    <file>../images/gear.png</file>
+    <file>../images/close.png</file>
+    <file>../images/results.png</file>
+    <file>../images/stream.png</file>
+    <file>../images/location.png</file>
+    <file>../images/point.png</file>
+    <file>../images/pin.png</file>
+    <file>../images/avance.png</file>
+    <file>../images/avance2.png</file>
+    <file>white-button.png</file>
+    <file>icon.png</file>
+    <file>../images/Rain.png</file>
+    <file>../images/PCPmax.png</file>
+    <file>../images/info.png</file>
+  </qresource>
+</RCC>
