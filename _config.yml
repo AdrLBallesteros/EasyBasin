@@ -1,0 +1,7 @@
+title: EasyBasin
+description: EasyBasin es un complemento de QGIS para la delimitación de cuencas hidrográficas.
+remote_theme: pages-themes/architect@v0.2.0
+plugins:
+- jekyll-remote-theme
+show_downloads: false
+google_analytics: G-XRYY2RSJE4
