@@ -30,7 +30,7 @@
 </p>
 
 > [!IMPORTANT]
-> **EasyBasin ha sido desarrollado para su aplicación dentro de la España peninsular**. Sin embargo, estamos dispuestos a colaborar con cualquiera que desee ampliar su área de aplicación en actualizaciones futuras. Haga sus sugerencias <a href="#contact">aquí</a>.
+> **EasyBasin ha sido desarrollado para su aplicación dentro de la España peninsular**. Sin embargo, estamos dispuestos a colaborar con cualquiera que desee ampliar su área de aplicación en actualizaciones futuras. Haga sus sugerencias <a href="#contacto">aquí</a>.
 
 ## Instalación
 
