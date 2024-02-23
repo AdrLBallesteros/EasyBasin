@@ -24,8 +24,10 @@
 
 <p align="center">
 <img src="resources/img/2.PNG" alt="2.png" width="400">
+</p>
 <p align="center">
 <img src="resources/img/3.PNG" alt="3.png" width="500">
+</p>
 
 > [!IMPORTANT]
 > **EasyBasin ha sido desarrollado para su aplicación dentro de la España peninsular**. Sin embargo, estamos dispuestos a colaborar con cualquiera que desee ampliar su área de aplicación en actualizaciones futuras. Haga sus sugerencias <a href="#contact">aquí</a>.
@@ -70,6 +72,7 @@
 
 <p align="center">
 <img src="resources/img/1b.PNG" alt="1b.png" width="300">
+</p>
 
 > [!IMPORTANT]
 >EasyBasin está desarrollado para su **aplicación dentro de la España peninsular**, por tanto emplea el **sistema de proyección oficial en España (ETRS89 / UTM zona 30N**) para todos sus procesos y ofrece la posibilidad de utilizar un [**Modelo Digital del Terreno (MDT) por defecto**](https://doi.org/10.5281/zenodo.10687298) de 25 metros de resolución obtenido del [CNIG](http://centrodedescargas.cnig.es/CentroDescargas/index.jsp).
@@ -78,6 +81,7 @@
 
 <p align="center">
 <img src="resources/gifs/2.gif" alt="2.gif" width="700">
+</p>
 
 
 3. El siguiente paso consiste en la **generación de un buffer de recorte** a partir del punto de salida indicado. Para ello, tras introducir nuestro propio MDT o [descargar el MDT por defecto](https://doi.org/10.5281/zenodo.10687298), modificamos la **distancia del buffer de recorte (km)** para ajustarla al área que estimamos que ocupa la cuenca de estudio.  
@@ -86,6 +90,7 @@
 
 <p align="center">
 <img src="resources/gifs/3.gif" alt="3.gif" width="700">
+</p>
 
 4. Obtenido el MDT recortado de la zona de estudio, procederemos a la **creación de la red de drenaje**. Para ello, **indicamos el “Umbral del Cauce”** **(número de celdas o área mínima que tienen que drenar a un punto para ser considerado como cauce)* y hacemos **clic en el botón RED DE DRENAJE**. 
 >  [!TIP]
@@ -93,6 +98,7 @@
 
 <p align="center">
 <img src="resources/gifs/4.gif" alt="4.gif" width="700">
+</p>
 
 5. A continuación, hacemos **clic en la DOBLE FLECHA para corregir la ubicación del punto de salida (uniéndolo al cauce más cercano)** y  activar el proceso de generación de la cuenca hidrográfica. Al hacer **clic en el botón CUENCA HIDROGRÁFICA** la cuenca será delimitada y toda la información relevante sobre sus características físicas generada. **Al finalizar este proceso, la ventana de resultados se abrirá de forma automática**.
 
@@ -101,6 +107,7 @@
 
 <p align="center">
 <img src="resources/gifs/5.gif" alt="5.gif" width="700">
+</p>
 
 6. La ventana resultados se encuentra dividida en cuatro partes: **(1) CARACTERÍSTICAS DE LA CUENCA**, **(2) INTENSIDAD DE PRECIPITACIÓN**, **(3) COEFICIENTE DE ESCORRENTÍA** y **(4) CAUDAL MÁXIMO ANUAL**:
 >
@@ -108,6 +115,7 @@
 
 <p align="center">
 <img src="resources/gifs/6.gif" alt="6.gif" width="500">
+</p>
 
 >* **(2) INTENSIDAD DE PRECIPITACIÓN**: En la **parte superior derecha**, debemos **seleccionar el período de retorno (T)** a utilizar (**2, 5, 10, 25, 50, 100 , 200, 500 años**) para calcular la **precipitación máxima diaria (Pd)**. En esta parte, la Pd puede ser obtenida mediante la **metodología propuesta en el documento oficial de [Máximas lluvias diarias en la España Peninsular](https://www.mitma.gob.es/recursos_mfom/0610300.pdf)**, extrayendo P y Cv de la ventana implementada en EasyBasin (**botón LIBRO**) o de **forma directa a partir de los mapas de lluvia máxima diaria generados por [Senent et al. (2023)](https://doi.org/10.1016/j.ejrh.2022.101308)**. A continuación, **clic en el botón NUBE** y **clic en el botón ENGRANAJE (2)** para calcular todos los parámetros del Método Racional relacionados con la intensidad de precipitación.
 
@@ -116,11 +124,13 @@
 
 <p align="center">
 <img src="resources/gifs/7.gif" alt="7.gif" width="500">
+</p>
 
 >* **(3) COEFICIENTE DE ESCORRENTÍA**: En la **parte inferior izquierda**, debemos **seleccionar tanto la capa raster del umbral de escorrentía a utilizar como el tipo de obra de drenaje**. **EasyBasin incluye tres capas del umbral de escorrentía distintas**: **[Raster P0 500m (MITECO)](https://www.miteco.gob.es/content/dam/miteco/es/cartografia-y-sig/ide/descargas/umbral_escorrentia_tcm30-176013.zip)** obtenido a partir de los usos del suelo del CORINE LAND COVER (CLC) 2000 y de acuerdo con la metodología expuesta en la publicación [Ferrer-Julià et al. (2004)](https://doi.org/10.1016/j.geoderma.2004.02.011); **Raster P0 100m (CLC2000)** de elaboración propia y obtenido a partir de los usos del suelo del CLC 2000; y **Raster P0 100m (CLC2018)** de elaboración propia y obtenido a partir de los usos del suelo del CLC 2018. A continuación, haciendo **clic en el botón del ENGRANAJE (3)** obtenemos todos los parámetros relacionados con el coeficiente de escorrentía del Método Racional.
 
 <p align="center">
 <img src="resources/gifs/8.gif" alt="8.gif" width="500">
+</p>
 
 > [!NOTE]
 > Si la zona de estudio se encuentra en las **Regiones 72, 821 y 822 del levante y sureste peninsular**, EasyBasin te preguntará si quieres utilizar la metodología específica propuesta por la norma 5.2-IC para el cálculo del caudal máximo anual en estas zonas.
@@ -129,6 +139,7 @@
 
 <p align="center">
 <img src="resources/gifs/9.gif" alt="9.gif" width="500">
+</p>
 
 > [!NOTE]
 > Si la **cuenca de estudio** supera el área recomendada para la aplicación del método racional según norma 5.2-IC (**>50 km2**). **EasyBasin mostrará un mensaje sugiriendo el uso de otro método hidrológico para el cálculo del caudal máximo anual**, tal como HEC-HMS. 
@@ -137,6 +148,7 @@
 
 <p align="center">
 <img src="resources/gifs/10.gif" alt="10.gif" width="700">
+</p>
 
 > [!WARNING]
 > La **generación de resultados por subcuenca** aun se encuentra en **versión beta**, por lo que **si se produce algún error durante su ejecución prueba a utilizar un umbral del cauce mayor, lo que generará un menor número de sub-cuencas**.
@@ -145,11 +157,13 @@
 
 <p align="center">
 <img src="resources/gifs/11.gif" alt="11.gif" width="700">
+</p>
 
 > [!IMPORTANT]
 > Para **cerrar el plugin de EasyBasin** debes **pulsar el botón CERRAR de la ventana inicial**. Esta acción mostrará el siguiente mensaje:
 <p align="center">
 <img src="resources/img/4.PNG" alt="4.png" width="400">
+</p>
 
 ## Créditos
 
