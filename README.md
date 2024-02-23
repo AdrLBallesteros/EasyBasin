@@ -23,9 +23,9 @@
 **EasyBasin** es un complemento de código abierto para QGIS desarrollado para optimizar el proceso de delimitación de cuencas hidrográficas y la obtención del **caudal máximo anual** mediante el **Método Racional** descrito en la [**Norma 5.2-IC DRENAJE SUPERFICIAL**](http://www.carreteros.org/normativa/drenaje/5_2ic2016/pdfs/5_2ic_fom_consolidada.pdf). Este plugin es **compatible con cualquier versión de QGIS igual o superior a 3.20**. EasyBasin **guía a los usuarios de forma intuitiva a través de todos los pasos necesarios para estimar el caudal máximo anual asociado al período de retorno indicado**. La interfaz de EasyBasin está dividida en dos ventanas principales: una **ventana inicial** que permite ejecutar los procesos geoespaciales para la delimitación de la cuenca hidrográfica y su red de drenaje, y una **ventana de resultados** que incluye todos los procesos, parámetros y datos de salida generados durante la aplicación del Método Racional. Esta ventana de resultados, se encuentra dividida en cuatro partes: **(1) CARACTERÍSTICAS DE LA CUENCA**, **(2) INTENSIDAD DE PRECIPITACIÓN**, **(3) COEFICIENTE DE ESCORRENTÍA** y **(4) CAUDAL MÁXIMO ANUAL**. Cada uno de estos pasos debe ser ejecutado de forma individual siguiendo el orden anteriormente descrito. **Una de las principales ventajas de EasyBasin es su fácil aplicación a partir de un único dato de entrada (punto de salida de la cuenca hidrográfica)**. 
 
 <p align="center">
-<img src="resources/img/2.png" alt="2.png" width="400">
+<img src="resources/img/2.PNG" alt="2.png" width="400">
 <p align="center">
-<img src="resources/img/3.png" alt="3.png" width="500">
+<img src="resources/img/3.PNG" alt="3.png" width="500">
 
 > [!IMPORTANT]
 > **EasyBasin ha sido desarrollado para su aplicación dentro de la España peninsular**. Sin embargo, estamos dispuestos a colaborar con cualquiera que desee ampliar su área de aplicación en actualizaciones futuras. Haga sus sugerencias <a href="#contact">aquí</a>.
@@ -69,7 +69,7 @@
 1. Haga **clic en el icono de EasyBasin** situado en la barra de herramientas de QGIS para ejecutarlo. En primer lugar, se le pedirá que **indique una ruta para guardar la carpeta del proyecto**.
 
 <p align="center">
-<img src="resources/img/1b.png" alt="1b.png" width="300">
+<img src="resources/img/1b.PNG" alt="1b.png" width="300">
 
 > [!IMPORTANT]
 >EasyBasin está desarrollado para su **aplicación dentro de la España peninsular**, por tanto emplea el **sistema de proyección oficial en España (ETRS89 / UTM zona 30N**) para todos sus procesos y ofrece la posibilidad de utilizar un [**Modelo Digital del Terreno (MDT) por defecto**](https://doi.org/10.5281/zenodo.10687298) de 25 metros de resolución obtenido del [CNIG](http://centrodedescargas.cnig.es/CentroDescargas/index.jsp).
@@ -149,7 +149,7 @@
 > [!IMPORTANT]
 > Para **cerrar el plugin de EasyBasin** debes **pulsar el botón CERRAR de la ventana inicial**. Esta acción mostrará el siguiente mensaje:
 <p align="center">
-<img src="resources/img/4.png" alt="4.png" width="400">
+<img src="resources/img/4.PNG" alt="4.png" width="400">
 
 ## Créditos
 
