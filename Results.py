@@ -103,7 +103,11 @@ class Results(QDialog, Ui_window):
         self.pushButton_labelbarMR.setEnabled(False)
 
         self.pushButton_PCPmax.setEnabled(False)          
-        self.pushButton_setup.setEnabled(False)                     
+        self.pushButton_setup.setEnabled(False)
+
+        self.lineEditPmax.setEnabled(False)
+        self.lineEditPmax_2.setEnabled(False) 
+        self.lineEditPmax_3.setEnabled(False)                      
 
     def tiempo(self): 
         #Obtener ruta de trabajo

@@ -117,10 +117,10 @@
 <img src="resources/gifs/6.gif" alt="6.gif" width="500">
 </p>
 
->* **(2) INTENSIDAD DE PRECIPITACIÓN**: En la **parte superior derecha**, debemos **seleccionar el período de retorno (T)** a utilizar (**2, 5, 10, 25, 50, 100 , 200, 500 años**) para calcular la **precipitación máxima diaria (Pd)**. En esta parte, la Pd puede ser obtenida mediante la **metodología propuesta en el documento oficial de [Máximas lluvias diarias en la España Peninsular](https://www.mitma.gob.es/recursos_mfom/0610300.pdf)**, extrayendo P y Cv de la ventana implementada en EasyBasin (**botón LIBRO**) o de **forma directa a partir de los mapas de lluvia máxima diaria generados por [Senent et al. (2023)](https://doi.org/10.1016/j.ejrh.2022.101308)**. A continuación, **clic en el botón NUBE** y **clic en el botón ENGRANAJE (2)** para calcular todos los parámetros del Método Racional relacionados con la intensidad de precipitación.
+>* **(2) INTENSIDAD DE PRECIPITACIÓN**: En la **parte superior derecha**, debemos **seleccionar el período de retorno (T)** a utilizar (**2, 5, 10, 25, 50, 100 , 200, 500 años**) para calcular la **precipitación máxima diaria (Pd)**. En esta parte, la Pd puede ser obtenida mediante la **metodología propuesta en el documento oficial de [Máximas lluvias diarias en la España Peninsular](https://www.mitma.gob.es/recursos_mfom/0610300.pdf)**, extrayendo P y Cv de la ventana implementada en EasyBasin (**botón LIBRO**) o de **forma directa a partir de los mapas de lluvia máxima diaria generados por [Senent-Aparicio et al. (2023)](https://doi.org/10.1016/j.ejrh.2022.101308)**. A continuación, **clic en el botón NUBE** y **clic en el botón ENGRANAJE (2)** para calcular todos los parámetros del Método Racional relacionados con la intensidad de precipitación.
 
 >  [!TIP]
-> Para obtener la Pd de forma directa (**[Senent et al., 2023](https://doi.org/10.1016/j.ejrh.2022.101308)**) simplemente **selecciona el T** y haz **clic en el botón NUBE**.
+> Para obtener la Pd de forma directa (**[Senent-Aparicio et al., 2023](https://doi.org/10.1016/j.ejrh.2022.101308)**) simplemente **selecciona el T** y haz **clic en el botón NUBE**.
 
 <p align="center">
 <img src="resources/gifs/7.gif" alt="7.gif" width="500">

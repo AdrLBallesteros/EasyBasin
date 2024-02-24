@@ -387,33 +387,32 @@ class BaseDialog(QDialog, Ui_BaseDialog):
         #Cambiar rampa de colores raster
         provider = layer.dataProvider()
         extent = layer.extent()
+        stats = provider.bandStatistics(1, QgsRasterBandStats.All, extent, 0)
 
         #Valores de los intervalos
-        stats = provider.bandStatistics(1, QgsRasterBandStats.All,extent, 0)
-        min= stats.minimumValue
-        max = stats.maximumValue
-        interval2 = max - (max-min)//4 
-        interval1 = min + (max-min)//2   
-        interval0 = min + (max-min)//4
-        valueList =[min, interval0, interval1, interval2, max]
+        minimum = stats.minimumValue
+        maximum = stats.maximumValue
+        value_range = maximum - minimum
+        intervals = 4  # For example, divide the range into 4 intervals
+        interval_values = [minimum + (value_range / intervals) * i for i in range(intervals + 1)]
 
         #Colores de los intervalos
-        colDic = {'green':'#008000','blue':'#66ffcc','yellow':'#ff9900', 'maroon':'#663300','white':'#ffffff'}
-        lst = [QgsColorRampShader.ColorRampItem(valueList[0], QColor(colDic['blue']), str(valueList[0])),
-                QgsColorRampShader.ColorRampItem(valueList[1], QColor(colDic['maroon']), str(valueList[1])), 
-                QgsColorRampShader.ColorRampItem(valueList[2], QColor(colDic['yellow']), str(valueList[2])), 
-                QgsColorRampShader.ColorRampItem(valueList[3], QColor(colDic['green']), str(valueList[3])),
-                QgsColorRampShader.ColorRampItem(valueList[4], QColor(colDic['white']), str(valueList[4]))]
+        colors = ['#66ffcc', '#663300', '#ff9900', '#008000', '#ffffff']  
+        ramp_items = [QgsColorRampShader.ColorRampItem(interval_values[i], QColor(colors[i])) for i in range(len(interval_values))]
 
         #Setup de la rampa de colores
-        myRasterShader = QgsRasterShader()
-        myColorRamp = QgsColorRampShader()
-        myColorRamp.setColorRampItemList(lst)
-        myColorRamp.setColorRampType(QgsColorRampShader.Interpolated)
-        myRasterShader.setRasterShaderFunction(myColorRamp)
-        myPseudoRenderer = QgsSingleBandPseudoColorRenderer(layer.dataProvider(), layer.type(),  myRasterShader)
-        layer.setRenderer(myPseudoRenderer)
+        raster_shader = QgsRasterShader()
+        color_ramp = QgsColorRampShader()
+        color_ramp.setColorRampItemList(ramp_items)
+        color_ramp.setColorRampType(QgsColorRampShader.Interpolated)
+        raster_shader.setRasterShaderFunction(color_ramp)
+
+        # Aplicar renderer
+        renderer = QgsSingleBandPseudoColorRenderer(provider, 1, raster_shader)
+        layer.setRenderer(renderer)
         layer.triggerRepaint()
+        self.iface.mapCanvas().refreshAllLayers()
+        self.iface.layerTreeView().refreshLayerSymbology(layer.id())
 
         self.progressBar.setValue(90)
 
@@ -600,8 +599,14 @@ class BaseDialog(QDialog, Ui_BaseDialog):
         self.iface.layerTreeView().refreshLayerSymbology( layer.id() )
 
         streams = QgsProject.instance().mapLayersByName("Stream segments")[0]
-        #Eliminar mapa base del CANVAS
+        #Eliminar stream segments del CANVAS
         QgsProject.instance().removeMapLayer(streams.id())
+
+        #Eliminar capa None si existe en el CANVAS
+        project = QgsProject.instance()
+        for layer in project.mapLayers().values():
+            if layer.name() == "None":
+                project.removeMapLayer(layer.id())
 
         self.progressBar.setValue(100)
         self.progressBar.setValue(0)
@@ -1312,6 +1317,12 @@ class BaseDialog(QDialog, Ui_BaseDialog):
         QgsProject.instance().removeMapLayer(layer2.id()) 
         layer3 = QgsProject.instance().mapLayersByName('Single parts')[0]
         QgsProject.instance().removeMapLayer(layer3.id()) 
+
+        #Eliminar capa None si existe en el CANVAS
+        project = QgsProject.instance()
+        for layer in project.mapLayers().values():
+            if layer.name() == "None":
+                project.removeMapLayer(layer.id())
 
         #Try/Except para resolver el problema de la seleccion de puntos duplicada
         try:
