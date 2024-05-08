@@ -184,7 +184,7 @@ class Ui_BaseDialog(object):
         self.lineEditMDT.setAlignment(QtCore.Qt.AlignCenter)
         self.lineEditMDT.setObjectName("lineEditMDT")
         self.labelBuffer = QtWidgets.QLabel(BaseDialog)
-        self.labelBuffer.setGeometry(QtCore.QRect(250, 200, 161, 31))
+        self.labelBuffer.setGeometry(QtCore.QRect(240, 200, 161, 31))
         self.labelBuffer.setScaledContents(True)
         self.labelBuffer.setObjectName("labelBuffer")
         self.lineEditStreams_area = QtWidgets.QLineEdit(BaseDialog)
@@ -255,6 +255,10 @@ class Ui_BaseDialog(object):
         self.pushButton_labelPath.setFont(font)
         self.pushButton_labelPath.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.pushButton_labelPath.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.pushButton_labelPath.setStyleSheet("QPushButton {\n"
+"    color: rgb(0, 0, 255);\n"
+"}\n"
+"")
         self.pushButton_labelPath.setAutoDefault(False)
         self.pushButton_labelPath.setFlat(True)
         self.pushButton_labelPath.setObjectName("pushButton_labelPath")
@@ -406,10 +410,11 @@ class Ui_BaseDialog(object):
         self.pushButtonBasin.setText(_translate("BaseDialog", "Cuenca \n"
 "Hidrográfica"))
         self.pushButton.setText(_translate("BaseDialog", "CERRAR"))
-        self.lineEditStreams_cells.setText(_translate("BaseDialog", "1000"))
+        self.lineEditStreams_cells.setText(_translate("BaseDialog", "10000"))
         self.labelStream.setText(_translate("BaseDialog", "<html><head/><body><p><span style=\" text-decoration: underline;\">Umbral del Cauce</span>:</p></body></html>"))
         self.labelAjustes.setText(_translate("BaseDialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:12pt; font-weight:600;\">=</span></p></body></html>"))
         self.pushButton_info.setText(_translate("BaseDialog", "EasyBasin"))
+        self.lineEditMDT.setToolTip(_translate("BaseDialog", "<html><head/><body><p>Cuadro de recorte generado a partir del punto de salida.</p></body></html>"))
         self.lineEditMDT.setText(_translate("BaseDialog", "10"))
         self.labelBuffer.setText(_translate("BaseDialog", "<html><head/><body><p><span style=\" text-decoration: underline;\">Buffer de recorte (km)</span>:</p></body></html>"))
         self.labelStream_2.setText(_translate("BaseDialog", "(celdas)"))

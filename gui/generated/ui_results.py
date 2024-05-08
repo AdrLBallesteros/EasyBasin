@@ -334,6 +334,10 @@ class Ui_window(object):
         self.pushButton_labelPath2.setFont(font)
         self.pushButton_labelPath2.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.pushButton_labelPath2.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.pushButton_labelPath2.setStyleSheet("QPushButton {\n"
+"    color: rgb(0, 0, 255);\n"
+"}\n"
+"")
         self.pushButton_labelPath2.setAutoDefault(False)
         self.pushButton_labelPath2.setFlat(True)
         self.pushButton_labelPath2.setObjectName("pushButton_labelPath2")
@@ -477,7 +481,6 @@ class Ui_window(object):
         self.graphicsView_F.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.graphicsView_F.setObjectName("graphicsView_F")
         self.graphicsView_D.raise_()
-        self.graphicsView_F.raise_()
         self.graphicsView_E.raise_()
         self.graphicsView_B.raise_()
         self.pushButton_setup.raise_()
@@ -571,6 +574,7 @@ class Ui_window(object):
         self.label_32.raise_()
         self.pushButton_labelbarMR.raise_()
         self.pushButton_HMS_2.raise_()
+        self.graphicsView_F.raise_()
 
         self.retranslateUi(window)
         self.pushButton_setup.clicked.connect(window.setup)

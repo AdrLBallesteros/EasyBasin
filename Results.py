@@ -202,8 +202,14 @@ class Results(QDialog, Ui_window):
                         'OUTPUT': 'TEMPORARY_OUTPUT'}
             processing.runAndLoadResults("native:zonalstatisticsfb", params1)
 
+            #Si la capa existe, la seleccionamos:
+            if QgsProject.instance().mapLayersByName('Estadistica zonal'):
+                pcp = QgsProject.instance().mapLayersByName("Estadistica zonal")[0]
+            else:
+                pcp = QgsProject.instance().mapLayersByName("Zonal Statistics")[0]
+
             #Seleccionar capa temporal por nombre
-            pcp = QgsProject.instance().mapLayersByName("Zonal Statistics")[0]
+            # pcp = QgsProject.instance().mapLayersByName("Zonal Statistics")[0]
 
             #Seleccionar campo tabla por nombre y obtener valor
             features = pcp.getFeatures()
@@ -704,8 +710,15 @@ class Results(QDialog, Ui_window):
                     'INPUT': self.folder + '/EasyBasin/HMS/Subcuencas/subcuencas_atr.shp',
                     'OUTPUT':'TEMPORARY_OUTPUT'}
         processing.runAndLoadResults("native:polygonstolines", params01)
+
+        #Si la capa existe, la seleccionamos:
+        if QgsProject.instance().mapLayersByName('Líneas'):
+            subbasin_border = QgsProject.instance().mapLayersByName('Líneas')[0]
+        else:
+            subbasin_border = QgsProject.instance().mapLayersByName('Lines')[0]
+
         #Seleccionar capa temporal y conseguir ruta
-        subbasin_border = QgsProject.instance().mapLayersByName('Lines')[0]
+        # subbasin_border = QgsProject.instance().mapLayersByName('Lines')[0]
         subbasin_border_path = subbasin_border.source()
 
         #Interseccion entre cuenca y cauce
@@ -717,7 +730,14 @@ class Results(QDialog, Ui_window):
                     'INTERSECT_FIELDS_PREFIX':'',
                     'OUTPUT':'TEMPORARY_OUTPUT'}
         processing.runAndLoadResults("native:lineintersections", params02)
-        intersect = QgsProject.instance().mapLayersByName("Intersections")[0]
+
+        #Si la capa existe, la seleccionamos:
+        if QgsProject.instance().mapLayersByName('Intersecciones'):
+            intersect = QgsProject.instance().mapLayersByName("Intersecciones")[0]
+        else:
+            intersect = QgsProject.instance().mapLayersByName("Intersections")[0]
+
+        # intersect = QgsProject.instance().mapLayersByName("Intersections")[0]
         intersectPath = intersect.source()
 
         #Extraer vertices del cauce LFP
@@ -726,12 +746,19 @@ class Results(QDialog, Ui_window):
                     'VERTICES':'0,-1',
                     'OUTPUT':'TEMPORARY_OUTPUT'}
         processing.runAndLoadResults("qgis:extractspecificvertices", params3)
-        vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
+
+        #Si la capa existe, la seleccionamos:
+        if QgsProject.instance().mapLayersByName('Vértices'):
+            vertex = QgsProject.instance().mapLayersByName("Vértices")[0]
+        else:
+            vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
+
+        # vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
         vertexPath = vertex.source()
         vertex.setName('Vertices Cauce')
 
-        layer1 = QgsProject.instance().mapLayersByName('Lines')[0]
-        QgsProject.instance().removeMapLayer(layer1.id()) 
+        # layer1 = QgsProject.instance().mapLayersByName('Lines')[0]
+        QgsProject.instance().removeMapLayer(subbasin_border.id()) 
 
         #Iterar a traves de todos los archivos shapefiles de la carpeta
         folder_path = self.folder + '/EasyBasin/HMS/Subcuencas/Separadas'
@@ -761,8 +788,15 @@ class Results(QDialog, Ui_window):
                             'OVERLAY': subbasin_path,
                             'OUTPUT': 'TEMPORARY_OUTPUT'}
                 processing.runAndLoadResults("native:clip", params2)
+
+                #Si la capa existe, la seleccionamos:
+                if QgsProject.instance().mapLayersByName('Cortado'):
+                    subbasin_stream = QgsProject.instance().mapLayersByName('Cortado')[0]
+                else:
+                    subbasin_stream = QgsProject.instance().mapLayersByName('Clipped')[0]
+
                 #Seleccionar capa temporal y conseguir ruta
-                subbasin_stream = QgsProject.instance().mapLayersByName('Clipped')[0]
+                # subbasin_stream = QgsProject.instance().mapLayersByName('Clipped')[0]
                 subbasin_stream_path = subbasin_stream.source()
 
                 #Extraer puntos de interseccion de cauce - cuenca
@@ -793,7 +827,14 @@ class Results(QDialog, Ui_window):
                             'NEAREST_POINTS':0,
                             'OUTPUT':'TEMPORARY_OUTPUT'}
                 processing.runAndLoadResults("qgis:distancematrix",params5)
-                streamsD = QgsProject.instance().mapLayersByName("Distance matrix")[0]
+
+                #Si la capa existe, la seleccionamos:
+                if QgsProject.instance().mapLayersByName('Matriz de distancia'):
+                    streamsD = QgsProject.instance().mapLayersByName('Matriz de distancia')[0]
+                else:
+                    streamsD = QgsProject.instance().mapLayersByName("Distance matrix")[0]
+
+                # streamsD = QgsProject.instance().mapLayersByName("Distance matrix")[0]
                 streamsDPath = streamsD.source()
 
                 #Corregir shape de matriz de distancia a formato point        
@@ -801,7 +842,14 @@ class Results(QDialog, Ui_window):
                             'INPUT':streamsDPath,
                             'OUTPUT':'TEMPORARY_OUTPUT'}
                 processing.runAndLoadResults("native:multiparttosingleparts", params6)
-                streamsDcorr = QgsProject.instance().mapLayersByName("Single parts")[0]
+
+                #Si la capa existe, la seleccionamos:
+                if QgsProject.instance().mapLayersByName('Monoparte'):
+                    streamsDcorr = QgsProject.instance().mapLayersByName("Monoparte")[0]
+                else:
+                    streamsDcorr = QgsProject.instance().mapLayersByName("Single parts")[0]
+
+                # streamsDcorr = QgsProject.instance().mapLayersByName("Single parts")[0]
                 streamsDcorrPath = streamsDcorr.source()
 
                 #Eliminar punto duplicados        
@@ -809,8 +857,15 @@ class Results(QDialog, Ui_window):
                             'INPUT':streamsDcorrPath,
                             'OUTPUT':'TEMPORARY_OUTPUT'}
                 processing.runAndLoadResults("native:deleteduplicategeometries", params7)
-                streamsDcorr = QgsProject.instance().mapLayersByName("Cleaned")[0]
-                streamsDcorr.setName('Puntos Cauces')
+
+                #Si la capa existe, la seleccionamos:
+                if QgsProject.instance().mapLayersByName('Limpiada'):
+                    streamsDcorr1 = QgsProject.instance().mapLayersByName("Limpiada")[0]
+                else:
+                    streamsDcorr1 = QgsProject.instance().mapLayersByName("Cleaned")[0]
+
+                # streamsDcorr1 = QgsProject.instance().mapLayersByName("Cleaned")[0]
+                streamsDcorr1.setName('Puntos Cauces')
 
                 try: 
                     #Activar capa a editar        
@@ -924,12 +979,12 @@ class Results(QDialog, Ui_window):
                                 'OUTPUT':lfpSub_path}
                     processing.run("native:shortestpathpointtopoint", params8)
 
-                layer1 = QgsProject.instance().mapLayersByName('Clipped')[0]
-                QgsProject.instance().removeMapLayer(layer1.id()) 
-                layer2 = QgsProject.instance().mapLayersByName('Distance matrix')[0]
-                QgsProject.instance().removeMapLayer(layer2.id()) 
-                layer3 = QgsProject.instance().mapLayersByName('Single parts')[0]
-                QgsProject.instance().removeMapLayer(layer3.id()) 
+                # layer1 = QgsProject.instance().mapLayersByName('Clipped')[0]
+                QgsProject.instance().removeMapLayer(subbasin_stream.id()) 
+                # layer2 = QgsProject.instance().mapLayersByName('Distance matrix')[0]
+                QgsProject.instance().removeMapLayer(streamsD.id()) 
+                # layer3 = QgsProject.instance().mapLayersByName('Single parts')[0]
+                QgsProject.instance().removeMapLayer(streamsDcorr.id()) 
                 layer4 = QgsProject.instance().mapLayersByName('Puntos Cauces')[0]
                 QgsProject.instance().removeMapLayer(layer4.id()) 
 
@@ -982,7 +1037,13 @@ class Results(QDialog, Ui_window):
                             'OUTPUT':'TEMPORARY_OUTPUT'}
                 processing.runAndLoadResults("qgis:extractspecificvertices", params8)
 
-                vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
+                #Si la capa existe, la seleccionamos:
+                if QgsProject.instance().mapLayersByName('Vértices'):
+                    vertex = QgsProject.instance().mapLayersByName("Vértices")[0]
+                else:
+                    vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
+
+                # vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
                 vertexPath2 = vertex.source()
 
                 elevation_folder = self.folder + '/EasyBasin/HMS/Red_Drenaje/ALT_Subcuencas'
@@ -996,7 +1057,7 @@ class Results(QDialog, Ui_window):
                             'OUTPUT':elevation_path}
                 processing.run("qgis:rastersampling",params9 )
 
-                vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
+                # vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
                 QgsProject.instance().removeMapLayer(vertex.id()) 
 
                 points_name = os.path.splitext(file_name)[0]+'_points'
@@ -1015,7 +1076,14 @@ class Results(QDialog, Ui_window):
                             'SEPARATE_DISJOINT':False,
                             'OUTPUT':'TEMPORARY_OUTPUT'}
                 processing.runAndLoadResults("native:dissolve", params10)
-                dissolve = QgsProject.instance().mapLayersByName("Dissolved")[0]
+
+                #Si la capa existe, la seleccionamos:
+                if QgsProject.instance().mapLayersByName('Disuelto'):
+                    dissolve = QgsProject.instance().mapLayersByName("Disuelto")[0]
+                else:
+                    dissolve = QgsProject.instance().mapLayersByName("Dissolved")[0]
+
+                # dissolve = QgsProject.instance().mapLayersByName("Dissolved")[0]
                 dissolvePath = dissolve.source()
 
                 #Recortar red de drenaje por subcuenca
@@ -1023,7 +1091,14 @@ class Results(QDialog, Ui_window):
                             'OVERLAY':subbasin_path,
                             'OUTPUT':'TEMPORARY_OUTPUT'}
                 processing.runAndLoadResults("native:clip", params11)
-                clip = QgsProject.instance().mapLayersByName("Clipped")[0]
+
+                #Si la capa existe, la seleccionamos:
+                if QgsProject.instance().mapLayersByName('Cortado'):
+                    clip = QgsProject.instance().mapLayersByName("Cortado")[0]
+                else:
+                    clip = QgsProject.instance().mapLayersByName("Clipped")[0]
+
+                # clip = QgsProject.instance().mapLayersByName("Clipped")[0]
                 clipPath = clip.source()
 
                 #Actualizar valores del campo "LONGITUD"
@@ -1052,7 +1127,14 @@ class Results(QDialog, Ui_window):
                             'PREFIX':'',
                             'OUTPUT':'TEMPORARY_OUTPUT'}
                 processing.runAndLoadResults("native:joinattributesbylocation", params12)
-                join_subbasin = QgsProject.instance().mapLayersByName("Joined layer")[0]
+
+                #Si la capa existe, la seleccionamos:
+                if QgsProject.instance().mapLayersByName('Capa unida'):
+                    join_subbasin = QgsProject.instance().mapLayersByName("Capa unida")[0]
+                else:
+                    join_subbasin = QgsProject.instance().mapLayersByName("Joined layer")[0]
+
+                # join_subbasin = QgsProject.instance().mapLayersByName("Joined layer")[0]
                 # join_subbasinPath = join_subbasin.source()
 
                 #Extraer altitud maxima de la red de drenaje
@@ -1061,7 +1143,14 @@ class Results(QDialog, Ui_window):
                             'INPUT':clipPath,
                             'OUTPUT':'TEMPORARY_OUTPUT'}
                 processing.runAndLoadResults("native:extractvertices", params13)
-                vertex3 = QgsProject.instance().mapLayersByName("Vertices")[0]
+
+                #Si la capa existe, la seleccionamos:
+                if QgsProject.instance().mapLayersByName('Vértices'):
+                    vertex3 = QgsProject.instance().mapLayersByName("Vértices")[0]
+                else:
+                    vertex3 = QgsProject.instance().mapLayersByName("Vertices")[0]
+
+                # vertex3 = QgsProject.instance().mapLayersByName("Vertices")[0]
                 vertexPath3 = vertex3.source()
 
                 #Copiar valor celda raster (MDT) en vertices del cauce red drenaje
@@ -1071,7 +1160,14 @@ class Results(QDialog, Ui_window):
                             'COLUMN_PREFIX':'ALT_red',
                             'OUTPUT':'TEMPORARY_OUTPUT'}
                 processing.runAndLoadResults("qgis:rastersampling",params14 )
-                sample = QgsProject.instance().mapLayersByName("Sampled")[0]
+
+                #Si la capa existe, la seleccionamos:
+                if QgsProject.instance().mapLayersByName('Muestreado'):
+                    sample = QgsProject.instance().mapLayersByName("Muestreado")[0]
+                else:
+                    sample = QgsProject.instance().mapLayersByName("Sampled")[0]
+
+                # sample = QgsProject.instance().mapLayersByName("Sampled")[0]
                 # samplePath = sample.source()
 
                 #Generar dataframe con Pandas para agrupar inputs para HMS
@@ -1123,16 +1219,16 @@ class Results(QDialog, Ui_window):
                 HMS_data4.append({'ALT_max_Cauce': max_alt})
 
                 #Eliminar capas sobrantes
-                layer5 = QgsProject.instance().mapLayersByName('Dissolved')[0]
-                QgsProject.instance().removeMapLayer(layer5.id()) 
-                layer6 = QgsProject.instance().mapLayersByName('Clipped')[0]
-                QgsProject.instance().removeMapLayer(layer6.id()) 
-                layer7 = QgsProject.instance().mapLayersByName('Joined layer')[0]
-                QgsProject.instance().removeMapLayer(layer7.id()) 
-                layer8 = QgsProject.instance().mapLayersByName('Vertices')[0]
-                QgsProject.instance().removeMapLayer(layer8.id()) 
-                layer9 = QgsProject.instance().mapLayersByName('Sampled')[0]
-                QgsProject.instance().removeMapLayer(layer9.id())
+                # layer5 = QgsProject.instance().mapLayersByName('Dissolved')[0]
+                QgsProject.instance().removeMapLayer(dissolve.id()) 
+                # layer6 = QgsProject.instance().mapLayersByName('Clipped')[0]
+                QgsProject.instance().removeMapLayer(clip.id()) 
+                # layer7 = QgsProject.instance().mapLayersByName('Joined layer')[0]
+                QgsProject.instance().removeMapLayer(join_subbasin.id()) 
+                # layer8 = QgsProject.instance().mapLayersByName('Vertices')[0]
+                QgsProject.instance().removeMapLayer(vertex3.id()) 
+                # layer9 = QgsProject.instance().mapLayersByName('Sampled')[0]
+                QgsProject.instance().removeMapLayer(sample.id())
 
                 layer10 = QgsProject.instance().mapLayersByName(basin_name)[0]
                 QgsProject.instance().removeMapLayer(layer10.id())
@@ -1199,8 +1295,8 @@ class Results(QDialog, Ui_window):
         #Eliminar capas sobrantes
         layer1 = QgsProject.instance().mapLayersByName('Vertices Cauce')[0]
         QgsProject.instance().removeMapLayer(layer1.id()) 
-        layer2 = QgsProject.instance().mapLayersByName('Intersections')[0]
-        QgsProject.instance().removeMapLayer(layer2.id()) 
+        # layer2 = QgsProject.instance().mapLayersByName('Intersections')[0]
+        QgsProject.instance().removeMapLayer(intersect.id()) 
 
         #Aplicar metodo racional por subcuenca 
         df_MR = df_HMS[['SUBCUENCA','AREA (KM2)', 'LONGITUD CAUCE (KM)', 'COTA MAX CAUCE (msnm)','COTA MIN CAUCE (msnm)','PENDIENTE (%)','TIEMPO DE CONCENTRACION (HR)', 'UMBRAL DE ESCORRENTIA (mm)']].copy()
@@ -1235,7 +1331,7 @@ class Results(QDialog, Ui_window):
         self.pushButton_labelbarMR.setEnabled(True)
 
     def info(self):
-        text = "<b>EasyBasin</b> es un complemento de QGIS para la delimitación de cuencas hidrográficas y la obtención del caudal máximo anual mediante el método racional descrito en la norma 5.2-IC DRENAJE SUPERFICIAL.<br><br><b>Manual</b>: (en desarrollo) <br><br><b>Referencia</b>: https://doi.org/10.1016/j.ejrh.2022.101308 <br><br>Para cualquier duda o sugerencia contactar con <b>alopez6@ucam.edu</b>. <br><br>Si encuentras útil este plugin, o si te ha ahorrado tiempo en tu trabajo, considera apoyarlo invitándome a un café. Gracias 😊"
+        text = "<b>EasyBasin</b> es un complemento de QGIS para la delimitación de cuencas hidrográficas y la obtención del caudal máximo anual mediante el método racional descrito en la norma 5.2-IC DRENAJE SUPERFICIAL.<br><br><b>Manual</b>: https://adrlballesteros.github.io/EasyBasin/ <br><br><b>Referencia</b>: https://doi.org/10.1016/j.ejrh.2022.101308 <br><br>Para cualquier duda o sugerencia contactar con <b>alopez6@ucam.edu</b>. <br><br>Si encuentras útil este plugin, o si te ha ahorrado tiempo en tu trabajo, considera apoyarlo invitándome a un café. Gracias 😊"
         msgINFO = QMessageBox()
         msgINFO.setWindowIcon(QIcon(":/images/icon.png"))
         msgINFO.setWindowTitle("Help & About")
@@ -1247,6 +1343,8 @@ class Results(QDialog, Ui_window):
     def open(self):
         FolderPath = self.pushButton_labelPath2.text()
         webbrowser.open(FolderPath)
+
+        self.pushButton_labelPath2.setStyleSheet("QPushButton { color: rgb(85, 0, 127); }")
 
     def openCSV(self):
         self.folder = str(self.pushButton_labelPath2.text())

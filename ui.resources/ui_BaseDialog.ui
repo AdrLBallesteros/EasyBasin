@@ -328,7 +328,7 @@ Hidrográfica</string>
     </font>
    </property>
    <property name="text">
-    <string>1000</string>
+    <string>10000</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -485,6 +485,9 @@ Hidrográfica</string>
      <pointsize>7</pointsize>
     </font>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cuadro de recorte generado a partir del punto de salida.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>10</string>
    </property>
@@ -495,7 +498,7 @@ Hidrográfica</string>
   <widget class="QLabel" name="labelBuffer">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>240</x>
      <y>200</y>
      <width>161</width>
      <height>31</height>
@@ -689,6 +692,12 @@ Hidrográfica</string>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	color: rgb(0, 0, 255);
+}
+</string>
    </property>
    <property name="autoDefault">
     <bool>false</bool>

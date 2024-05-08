@@ -81,8 +81,8 @@ class BaseDialog(QDialog, Ui_BaseDialog):
 
         #Aviso de fallo en la instalación
         if not os.path.exists("C:/EasyBasin"):   
-            QMessageBox.critical(None, "Error de instalación", "Carpeta C:\EasyBasin no encontrada.\nVuelve a lanzar el instalador o descarga desde el repositorio GitHub la carpeta EasyBasin y copiala en el disco C:\. ")
-
+            QMessageBox.critical(None, "Error de instalación", "Carpeta C:\EasyBasin no encontrada.\n\nVuelve a lanzar el instalador o descargue y descomprima la carpeta *EasyBasin* del siguiente enlace (https://doi.org/10.5281/zenodo.11145915) y guardela en Disco C:\ ")
+            self.close()
         self.inputRaster.setFilePath('C:/EasyBasin/Rasters/MDT/MDT25_SPAIN.tif')
 
     def InitialWindow(self):
@@ -280,6 +280,12 @@ class BaseDialog(QDialog, Ui_BaseDialog):
             #Eliminar mapa base del CANVAS
             QgsProject.instance().removeMapLayer(Buffered.id())
 
+        if QgsProject.instance().mapLayersByName('Hecho buffer'):
+            #Seleccionar capa por nombre
+            Buffered = QgsProject.instance().mapLayersByName('Hecho buffer')[0]
+            #Eliminar mapa base del CANVAS
+            QgsProject.instance().removeMapLayer(Buffered.id())
+
         #Crear buffer a partir del punto
         params = {'INPUT':self.folder + '/EasyBasin/Capas_SIG/Punto_Salida/punto_salida.shp',
                     'DISTANCE':buffer,
@@ -291,7 +297,12 @@ class BaseDialog(QDialog, Ui_BaseDialog):
                     'OUTPUT':'TEMPORARY_OUTPUT'}
         processing.runAndLoadResults("native:buffer", params)
 
-        Buffered = QgsProject.instance().mapLayersByName('Buffered')[0]
+        #Si la capa existe, la seleccionamos:
+        if QgsProject.instance().mapLayersByName('Hecho buffer'):
+            Buffered = QgsProject.instance().mapLayersByName('Hecho buffer')[0]
+        else:
+            Buffered = QgsProject.instance().mapLayersByName('Buffered')[0]
+
         #Cambiar color y tamaño capa
         symbol = QgsFillSymbol.createSimple({'color':'red','color_border':'red','width_border':'0.5','style':'no'})
         Buffered.renderer().setSymbol(symbol)
@@ -465,8 +476,14 @@ class BaseDialog(QDialog, Ui_BaseDialog):
         parent.insertChildNode(0, pointClone)
         parent.removeChildNode(point)
 
+        #Si la capa existe, la seleccionamos:
+        if QgsProject.instance().mapLayersByName('Hecho buffer'):
+            Buffered = QgsProject.instance().mapLayersByName('Hecho buffer')[0]
+        else:
+            Buffered = QgsProject.instance().mapLayersByName('Buffered')[0]
+
         #Cambiar nombre de la capa buffer
-        Buffered = QgsProject.instance().mapLayersByName('Buffered')[0]
+        # Buffered = QgsProject.instance().mapLayersByName('Buffered')[0]
         Buffered.setName('Buffer de recorte')
 
     def umbral(self):
@@ -1282,8 +1299,13 @@ class BaseDialog(QDialog, Ui_BaseDialog):
                     'OUTPUT':'TEMPORARY_OUTPUT'}
         processing.runAndLoadResults("qgis:distancematrix",params5)
 
+        #Si la capa existe, la seleccionamos:
+        if QgsProject.instance().mapLayersByName('Matriz de distancia'):
+            streamsD = QgsProject.instance().mapLayersByName('Matriz de distancia')[0]
+        else:
+            streamsD = QgsProject.instance().mapLayersByName("Distance matrix")[0]
+
         #Seleccionar capa temporal y conseguir ruta
-        streamsD = QgsProject.instance().mapLayersByName("Distance matrix")[0]
         streamsDPath = streamsD.source()
 
         self.progressBar.setValue(50)  
@@ -1294,8 +1316,13 @@ class BaseDialog(QDialog, Ui_BaseDialog):
                     'OUTPUT':'TEMPORARY_OUTPUT'}
         processing.runAndLoadResults("native:multiparttosingleparts", params6)
 
+        #Si la capa existe, la seleccionamos:
+        if QgsProject.instance().mapLayersByName('Monoparte'):
+            streamsDcorr = QgsProject.instance().mapLayersByName("Monoparte")[0]
+        else:
+            streamsDcorr = QgsProject.instance().mapLayersByName("Single parts")[0]
+
         #Seleccionar capa temporal y cambiar nombre
-        streamsDcorr = QgsProject.instance().mapLayersByName("Single parts")[0]
         streamsDcorrPath = streamsDcorr.source()
 
         #Eliminar punto duplicados        
@@ -1304,19 +1331,24 @@ class BaseDialog(QDialog, Ui_BaseDialog):
                     'OUTPUT':'TEMPORARY_OUTPUT'}
         processing.runAndLoadResults("native:deleteduplicategeometries", params7)
 
+        #Si la capa existe, la seleccionamos:
+        if QgsProject.instance().mapLayersByName('Limpiada'):
+            streamsDcorr1 = QgsProject.instance().mapLayersByName("Limpiada")[0]
+        else:
+            streamsDcorr1 = QgsProject.instance().mapLayersByName("Cleaned")[0]
+
         #Seleccionar capa temporal y cambiar nombre
-        streamsDcorr = QgsProject.instance().mapLayersByName("Cleaned")[0]
-        streamsDcorr.setName('Puntos Cauces')
+        streamsDcorr1.setName('Puntos Cauces')
 
         #Eliminar capas sobrantes
         layer0 = QgsProject.instance().mapLayersByName('Stream segments')[0]
         QgsProject.instance().removeMapLayer(layer0.id()) 
-        layer1 = QgsProject.instance().mapLayersByName('Distance matrix')[0]
-        QgsProject.instance().removeMapLayer(layer1.id()) 
+        # layer1 = QgsProject.instance().mapLayersByName('Distance matrix')[0]
+        QgsProject.instance().removeMapLayer(streamsD.id()) 
         layer2 = QgsProject.instance().mapLayersByName('Points along lines')[0]
         QgsProject.instance().removeMapLayer(layer2.id()) 
-        layer3 = QgsProject.instance().mapLayersByName('Single parts')[0]
-        QgsProject.instance().removeMapLayer(layer3.id()) 
+        # layer3 = QgsProject.instance().mapLayersByName('Single parts')[0]
+        QgsProject.instance().removeMapLayer(streamsDcorr.id()) 
 
         #Eliminar capa None si existe en el CANVAS
         project = QgsProject.instance()
@@ -1473,7 +1505,12 @@ class BaseDialog(QDialog, Ui_BaseDialog):
                     'OUTPUT':'TEMPORARY_OUTPUT'}
         processing.runAndLoadResults("qgis:extractspecificvertices", params8)
 
-        vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
+        #Si la capa existe, la seleccionamos:
+        if QgsProject.instance().mapLayersByName('Vértices'):
+            vertex = QgsProject.instance().mapLayersByName("Vértices")[0]
+        else:
+            vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
+
         vertexPath = vertex.source()
 
         #Copiar valor celda raster (MDT) en vertices del cauce principal
@@ -1484,7 +1521,7 @@ class BaseDialog(QDialog, Ui_BaseDialog):
                     'OUTPUT':self.folder + '/EasyBasin/Capas_SIG/Procesos_Internos/LongestFlowPath_Altitud.shp'}
         processing.runAndLoadResults("qgis:rastersampling",params9 )
 
-        vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
+        # vertex = QgsProject.instance().mapLayersByName("Vertices")[0]
         QgsProject.instance().removeMapLayer(vertex.id()) 
 
         #Mover capa punto a la ultima posicion en el panel de capas
@@ -1554,7 +1591,7 @@ class BaseDialog(QDialog, Ui_BaseDialog):
 
     def info(self):
 
-        text = "<b>EasyBasin</b> es un complemento de QGIS para la delimitación de cuencas hidrográficas y la obtención del caudal máximo anual mediante el método racional descrito en la norma 5.2-IC DRENAJE SUPERFICIAL.<br><br><b>Manual</b>: (en desarrollo) <br><br><b>Referencia</b>: https://doi.org/10.1016/j.ejrh.2022.101308 <br><br>Para cualquier duda o sugerencia contactar con <b>alopez6@ucam.edu</b>. <br><br>Si encuentras útil este plugin, o si te ha ahorrado tiempo en tu trabajo, considera apoyarlo invitándome a un café. Gracias 😊"
+        text = "<b>EasyBasin</b> es un complemento de QGIS para la delimitación de cuencas hidrográficas y la obtención del caudal máximo anual mediante el método racional descrito en la norma 5.2-IC DRENAJE SUPERFICIAL.<br><br><b>Manual</b>: https://adrlballesteros.github.io/EasyBasin/ <br><br><b>Referencia</b>: https://doi.org/10.1016/j.ejrh.2022.101308 <br><br>Para cualquier duda o sugerencia contactar con <b>alopez6@ucam.edu</b>. <br><br>Si encuentras útil este plugin, o si te ha ahorrado tiempo en tu trabajo, considera apoyarlo invitándome a un café. Gracias 😊"
         msgINFO = QMessageBox()
         msgINFO.setWindowIcon(QIcon(":/images/icon.png"))
         msgINFO.setWindowTitle("Help & About")
@@ -1569,6 +1606,8 @@ class BaseDialog(QDialog, Ui_BaseDialog):
 
         FolderPath = self.pushButton_labelPath.text()
         webbrowser.open(FolderPath)
+
+        self.pushButton_labelPath.setStyleSheet("QPushButton { color: rgb(85, 0, 127); }")
 
     def coffee(self):
 

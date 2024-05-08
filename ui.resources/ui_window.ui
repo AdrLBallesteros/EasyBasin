@@ -1143,6 +1143,12 @@ resultados</string>
    <property name="layoutDirection">
     <enum>Qt::RightToLeft</enum>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+	color: rgb(0, 0, 255);
+}
+</string>
+   </property>
    <property name="autoDefault">
     <bool>false</bool>
    </property>
@@ -1490,7 +1496,7 @@ por subcuenca</string>
      <x>590</x>
      <y>540</y>
      <width>101</width>
-     <height>51</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="font">
@@ -1534,7 +1540,6 @@ por subcuenca</string>
    </property>
   </widget>
   <zorder>graphicsView_D</zorder>
-  <zorder>graphicsView_F</zorder>
   <zorder>graphicsView_E</zorder>
   <zorder>graphicsView_B</zorder>
   <zorder>pushButton_setup</zorder>
@@ -1628,6 +1633,7 @@ por subcuenca</string>
   <zorder>label_32</zorder>
   <zorder>pushButton_labelbarMR</zorder>
   <zorder>pushButton_HMS_2</zorder>
+  <zorder>graphicsView_F</zorder>
  </widget>
  <resources>
   <include location="resources.qrc"/>
