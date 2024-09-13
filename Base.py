@@ -35,20 +35,25 @@ class Base:
         self.iface = iface
 
     def initGui(self):
-        self.action = QAction(QIcon(":/imgBase/icon.png"), u"EasyBasin v3", self.iface.mainWindow())
+        self.action = QAction(
+            QIcon(":/imgBase/icon.png"), "EasyBasin v3", self.iface.mainWindow()
+        )
         self.action.triggered.connect(self.run)
         self.iface.addToolBarIcon(self.action)
-        self.iface.addPluginToMenu(u"&EasyBasin v3", self.action)
-
+        self.iface.addPluginToMenu("&EasyBasin v3", self.action)
 
     def unload(self):
-        self.iface.removePluginMenu(u"&EasyBasin v3", self.action)
+        self.iface.removePluginMenu("&EasyBasin v3", self.action)
         self.iface.removeToolBarIcon(self.action)
- 
 
     def run(self):
         self.dlg = BaseDialog(self.iface)
-        self.dlg.setWindowFlags(Qt.WindowSystemMenuHint | Qt.MSWindowsFixedSizeDialogHint | Qt.WindowTitleHint | Qt.WindowMinimizeButtonHint)
+        self.dlg.setWindowFlags(
+            Qt.WindowSystemMenuHint
+            | Qt.MSWindowsFixedSizeDialogHint
+            | Qt.WindowTitleHint
+            | Qt.WindowMinimizeButtonHint
+        )
         self.dlg.InitialWindow()
         # self.dlg.show()
         # self.dlg.exec_()
