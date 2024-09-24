@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>748</width>
-    <height>488</height>
+    <width>746</width>
+    <height>491</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -41,6 +41,9 @@
      <bold>false</bold>
     </font>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Haz clic para extraer el MDT del área de recorte y activar la creación de la red de drenaje.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="icon">
     <iconset resource="resources.qrc">
      <normaloff>:/imgBase/images/avance.png</normaloff>:/imgBase/images/avance.png</iconset>
@@ -60,6 +63,9 @@
      <width>381</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Indica la ruta del MDT. &lt;span style=&quot; font-style:italic;&quot;&gt;Se recomienda descargar y utilizar el MDT por defecto.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelMDT">
@@ -90,6 +96,12 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ingresa la coordenada X del punto de salida.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="toolTipDuration">
+    <number>-1</number>
+   </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
@@ -102,6 +114,12 @@
      <width>121</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ingresa la coordenada Y del punto de salida.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="toolTipDuration">
+    <number>-1</number>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -148,6 +166,9 @@
      <bold>false</bold>
     </font>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Haz clic para activar la generación del área de recorte (buffer) a partir del punto de salida.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="icon">
     <iconset resource="resources.qrc">
      <normaloff>:/imgBase/images/avance.png</normaloff>:/imgBase/images/avance.png</iconset>
@@ -172,14 +193,13 @@
     <font>
      <family>MS Shell Dlg 2</family>
      <pointsize>10</pointsize>
-     <weight>9</weight>
+     <weight>50</weight>
      <italic>false</italic>
      <bold>false</bold>
     </font>
    </property>
-   <property name="styleSheet">
-    <string notr="true">font: 75 10pt &quot;MS Shell Dlg 2&quot;;
-</string>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Haz clic para generar la red de drenaje. &lt;span style=&quot; font-style:italic;&quot;&gt;Este proceso puede ser repetido tanta veces como sea necesario hasta alcanzar la densidad de drenaje deseada.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>	Red de Drenaje</string>
@@ -208,14 +228,16 @@
     <font>
      <family>MS Shell Dlg 2</family>
      <pointsize>10</pointsize>
-     <weight>9</weight>
+     <weight>50</weight>
      <italic>false</italic>
      <bold>false</bold>
     </font>
    </property>
-   <property name="styleSheet">
-    <string notr="true">font: 75 10pt &quot;MS Shell Dlg 2&quot;;
-</string>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Haz clic para indicar el punto de salida directamente en el mapa base.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="toolTipDuration">
+    <number>-1</number>
    </property>
    <property name="text">
     <string>	Seleccionar punto en el mapa</string>
@@ -247,14 +269,13 @@
     <font>
      <family>MS Shell Dlg 2</family>
      <pointsize>10</pointsize>
-     <weight>9</weight>
+     <weight>50</weight>
      <italic>false</italic>
      <bold>false</bold>
     </font>
    </property>
-   <property name="styleSheet">
-    <string notr="true">font: 75 10pt &quot;MS Shell Dlg 2&quot;;
-</string>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Haz clic para delimitar la cuenca hidrográfica y extraer sus características físicas principales. &lt;span style=&quot; font-style:italic;&quot;&gt;Este proceso puede tardar varios minutos.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>Cuenca 
@@ -343,6 +364,9 @@ Hidrográfica</string>
      <height>21</height>
     </rect>
    </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Especifica el número de celdas o el área mínima que deben drenar a un punto para ser considerado como cauce.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Umbral del Cauce&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
@@ -404,6 +428,9 @@ Hidrográfica</string>
      <height>31</height>
     </rect>
    </property>
+   <property name="toolTipDuration">
+    <number>-1</number>
+   </property>
   </widget>
   <widget class="QPushButton" name="pushButton_info">
    <property name="geometry">
@@ -461,8 +488,8 @@ Hidrográfica</string>
     <string/>
    </property>
    <property name="icon">
-    <iconset resource="../../../../../../../../../../../../POSDOC/PROGRAMACION/MapSWAT_v3/ui.resources/resources.qrc">
-     <normaloff>:/imgMapSWAT/images/coffee.png</normaloff>:/imgMapSWAT/images/coffee.png</iconset>
+    <iconset resource="resources.qrc">
+     <normaloff>:/imgBase/white-button.png</normaloff>:/imgBase/white-button.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -486,7 +513,7 @@ Hidrográfica</string>
     </font>
    </property>
    <property name="toolTip">
-    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cuadro de recorte generado a partir del punto de salida.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Especifica el radio del área de recorte (km). &lt;span style=&quot; font-style:italic;&quot;&gt;Actualizado en tiempo real.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>10</string>
@@ -503,6 +530,9 @@ Hidrográfica</string>
      <width>161</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Área o cuadrícula de recorte.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; text-decoration: underline;&quot;&gt;Buffer de recorte (km)&lt;/span&gt;:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -587,6 +617,9 @@ Hidrográfica</string>
      <weight>50</weight>
      <bold>false</bold>
     </font>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Haz clic para confirmar la red de drenaje final y activar la generación de la cuenca hidrográfica.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
@@ -674,9 +707,9 @@ Hidrográfica</string>
   <widget class="QPushButton" name="pushButton_labelPath">
    <property name="geometry">
     <rect>
-     <x>550</x>
+     <x>420</x>
      <y>460</y>
-     <width>191</width>
+     <width>321</width>
      <height>20</height>
     </rect>
    </property>
@@ -793,6 +826,9 @@ Hidrográfica</string>
      <weight>50</weight>
      <bold>false</bold>
     </font>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Haz clic para abrir la ventana de resultados.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
    <property name="icon">
     <iconset resource="resources.qrc">
@@ -980,7 +1016,6 @@ Hidrográfica</string>
  </customwidgets>
  <resources>
   <include location="resources.qrc"/>
-  <include location="../../../../../../../../../../../../POSDOC/PROGRAMACION/MapSWAT_v3/ui.resources/resources.qrc"/>
  </resources>
  <connections>
   <connection>

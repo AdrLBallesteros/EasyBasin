@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="imgBase">
+    <file>white-button.png</file>
     <file>../images/map.png</file>
     <file>../images/arrow-fork.png</file>
     <file>../images/save.png</file>

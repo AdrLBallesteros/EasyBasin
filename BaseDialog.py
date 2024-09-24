@@ -451,33 +451,34 @@ class BaseDialog(QDialog, Ui_BaseDialog):
         extent = layer.extent()
         stats = provider.bandStatistics(1, QgsRasterBandStats.All, extent, 0)
 
-        # Valores de los intervalos
+        # Definir rangos e intervalos de la rampa de colores
         minimum = stats.minimumValue
         maximum = stats.maximumValue
-        value_range = maximum - minimum
-        intervals = 4  # For example, divide the range into 4 intervals
-        interval_values = [
-            minimum + (value_range / intervals) * i for i in range(intervals + 1)
-        ]
+        intervals = 4
+        interval_range = (maximum - minimum) / intervals
+        interval_values = [minimum + i * interval_range for i in range(intervals + 1)]
 
-        # Colores de los intervalos
+        # Definir colores de la rampa
         colors = ["#66ffcc", "#663300", "#ff9900", "#008000", "#ffffff"]
         ramp_items = [
-            QgsColorRampShader.ColorRampItem(interval_values[i], QColor(colors[i]))
-            for i in range(len(interval_values))
+            QgsColorRampShader.ColorRampItem(value, QColor(color))
+            for value, color in zip(interval_values, colors)
         ]
 
-        # Setup de la rampa de colores
-        raster_shader = QgsRasterShader()
+        # Crear la rampa de colores
         color_ramp = QgsColorRampShader()
-        color_ramp.setColorRampItemList(ramp_items)
         color_ramp.setColorRampType(QgsColorRampShader.Interpolated)
+        color_ramp.setColorRampItemList(ramp_items)
+
+        raster_shader = QgsRasterShader()
         raster_shader.setRasterShaderFunction(color_ramp)
 
-        # Aplicar renderer
+        # Aplicar la rampa de colores al raster
         renderer = QgsSingleBandPseudoColorRenderer(provider, 1, raster_shader)
         layer.setRenderer(renderer)
         layer.triggerRepaint()
+
+        # Actualizar el canvas
         self.iface.mapCanvas().refreshAllLayers()
         self.iface.layerTreeView().refreshLayerSymbology(layer.id())
 
@@ -970,10 +971,20 @@ class BaseDialog(QDialog, Ui_BaseDialog):
         # Cerrar editor
         layer.commitChanges()
 
+        # Eliminar cuencas pequeñas
+        params = {
+            "INPUT": self.folder
+            + "/EasyBasin/Capas_SIG/Cuenca_Hidrografica/cuenca_hidrografica.shp",
+            "EXPRESSION": '"AREA"= maximum( "AREA" )',
+            "OUTPUT": self.folder
+            + "/EasyBasin/Capas_SIG/Cuenca_Hidrografica/cuenca_hidrografica2.shp",
+        }
+        processing.run("native:extractbyexpression", params)
+
         # Proceso calcular altitud maxima y minima - ZONAL_STATISTICS
         params1 = {
             "INPUT": self.folder
-            + "/EasyBasin/Capas_SIG/Cuenca_Hidrografica/cuenca_hidrografica.shp",
+            + "/EasyBasin/Capas_SIG/Cuenca_Hidrografica/cuenca_hidrografica2.shp",
             "INPUT_RASTER": self.folder + "/EasyBasin/Capas_SIG/MDT/MDT_corregido.tif",
             "RASTER_BAND": 1,
             "COLUMN_PREFIX": "ALT_",
@@ -1135,7 +1146,7 @@ class BaseDialog(QDialog, Ui_BaseDialog):
                 "INPUT": self.folder
                 + "/EasyBasin/Capas_SIG/Procesos_Internos/subcuencas.tif",
                 "MASK": self.folder
-                + "/EasyBasin/Capas_SIG/Cuenca_Hidrografica/Cuenca_hidrografica.shp",
+                + "/EasyBasin/Capas_SIG/Cuenca_Hidrografica/Cuenca_hidrografica2.shp",
                 "NODATA": None,
                 "ALPHA_BAND": False,
                 "CROP_TO_CUTLINE": True,
@@ -1433,7 +1444,7 @@ class BaseDialog(QDialog, Ui_BaseDialog):
             "-z": False,
             "-b": False,
             "-t": True,
-            "output": self.folder + "/EasyBasin/HMS/Red_Drenaje/Red_drenaje_LFP.shp",
+            "output": "TEMPORARY_OUTPUT",
             "GRASS_REGION_PARAMETER": None,
             "GRASS_REGION_CELLSIZE_PARAMETER": 0,
             "GRASS_OUTPUT_TYPE_PARAMETER": 0,
@@ -1441,7 +1452,27 @@ class BaseDialog(QDialog, Ui_BaseDialog):
             "GRASS_VECTOR_LCO": "",
             "GRASS_VECTOR_EXPORT_NOCAT": False,
         }
-        processing.run("grass7:r.to.vect", params3)
+        processing.runAndLoadResults("grass7:r.to.vect", params3)
+
+        # Seleccionar capa temporal y conseguir ruta
+        streams2 = QgsProject.instance().mapLayersByName("Vectorized")[0]
+        streamsPath2 = streams2.source()
+
+        # Recortar capas vectoriales
+        params = {
+            "INPUT": streamsPath2,
+            "OVERLAY": self.folder
+            + "/EasyBasin/Capas_SIG/Cuenca_Hidrografica/cuenca_hidrografica2.shp",
+            "OUTPUT": self.folder + "/EasyBasin/HMS/Red_Drenaje/Red_drenaje_LFP.shp",
+        }
+        processing.run("native:clip", params)
+
+        # Si la capa de cauces existe, la eliminamos
+        if QgsProject.instance().mapLayersByName("Vectorized"):
+            # Seleccionar capa por nombre
+            Vectorized = QgsProject.instance().mapLayersByName("Vectorized")[0]
+            # Eliminar mapa base del CANVAS
+            QgsProject.instance().removeMapLayer(Vectorized.id())
 
         self.progressBar.setValue(30)
 

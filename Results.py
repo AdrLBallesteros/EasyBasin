@@ -651,7 +651,7 @@ class Results(QDialog, Ui_window):
                 area_impermeable = feature.attribute("Area_Imp_s")
             imp = str(round(float(area_impermeable) / (float(A) * 1000000) * 100, 2))
 
-            informe_HMS = informe_path + "/Informe_INPUTS_HMS_Easybasin.txt"
+            informe_HMS = informe_path + "/Informe_HMS_INPUTS_EasyBasin.txt"
             with open(informe_HMS, "w") as file2:
                 file2.write(
                     "------------------------------------INFORME DE DATOS DE ENTRADA PARA HEC-HMS GENERADO POR EASYBASIN------------------------------------ \n \n"
@@ -660,19 +660,9 @@ class Results(QDialog, Ui_window):
                     "CUENCA HIDROGRÁFICA COMPLETA:  \n----------------------------- \n\n"
                 )
                 file2.write("-Área: " + A + " km2 \n")
-                file2.write("-Longitud del cauce (Lc): " + Lc + " m \n")
-                file2.write("-Altitud Máxima del cauce: " + Hmax + " msnm \n")
-                file2.write("-Altitud Mínima del cauce: " + Hmin + " msnm \n")
-                file2.write("-Pendiente media del cauce (Jc): " + Jc + " % \n")
-                file2.write("-Tiempo de concentración (tc): " + tc + " horas \n")
-                file2.write("-Lag time (Lag): " + lagTime + " min \n")
-                file2.write(
-                    "-Abstracción inicial o umbral de escorrentía inicial (Poi): "
-                    + Poi
-                    + " mm \n"
-                )
                 file2.write("-Número de curva (CN): " + CN + "\n")
                 file2.write("-Área impermeable (Impervious): " + imp + " % \n")
+                file2.write("-Lag time (Lag): " + lagTime + " min \n")
                 file2.write("-Muskingum K (K): " + Mus_K + " horas \n")
                 file2.write(
                     "-Muskingum X (X): 0(Caudaloso, poca pendiente) - 0.5(Poco caudaloso, gran pendiente) \n"
@@ -711,23 +701,105 @@ class Results(QDialog, Ui_window):
 
         # Generar frame del layout
         map = QgsLayoutItemMap(layout)
-        map.setRect(0, 0, 297, 170)
-        map.setFrameEnabled(True)
+        map.setRect(0, 0, 210, 297)
+        # map.setFrameEnabled(True)
         # Definir extension
         map.setExtent(canvas.extent())
         crs = QgsCoordinateReferenceSystem("EPSG:25830")
         map.setCrs(crs)
+
+        # Incluir capas en el layout
+        layer_names = [
+            "Punto de Salida (corregido)",
+            "Cuenca Hidrográfica",
+            "Red de Drenaje (Cuenca)",
+            "Subcuencas",
+            "Hillshade",
+            "MDT",
+        ]
+        # Crear un diccionario con todas las capas del proyecto
+        all_layers = {
+            layer.name(): layer for layer in QgsProject.instance().mapLayers().values()
+        }
+        # Ordenar las capas que se quieren añadir al layout
+        ordered_layers = [
+            all_layers[name] for name in layer_names if name in all_layers
+        ]
+        map.setLayers(ordered_layers)
         layout.addLayoutItem(map)
+
+        # Centrar el mapa en el layout
+        layout_width = layout.pageCollection().page(0).pageSize().width()
+        layout_height = layout.pageCollection().page(0).pageSize().height()
+        map_width = map.rect().width()
+        map_height = map.rect().height()
+        map_x = (layout_width - map_width) / 2
+        map_y = (layout_height - map_height) / 2
+        map.attemptMove(QgsLayoutPoint(map_x, map_y, QgsUnitTypes.LayoutMillimeters))
+
         layout.refresh()
 
         # Añadir titulo al layout
         title = QgsLayoutItemLabel(layout)
-        title.setText("Cuenca hidrográfica generada por el plugin de QGIS 'EasyBasin'")
+        title.setText(
+            "Mapa generado por el plugin de QGIS 3: 'EasyBasin'  (https://adrlballesteros.github.io/EasyBasin/)"
+        )
         font = QFont("Arial", 12)
-        font.setBold(True)  # Make the font bold
+        font.setBold(True)
         title.setFont(font)
         layout.addLayoutItem(title)
-        title.attemptMove(QgsLayoutPoint(80, 205, QgsUnitTypes.LayoutMillimeters))
+        # Position the title just above the map
+        title_x = (layout_width - map_width) / 2
+        title_y = map_y - title.rect().height() - 5
+        title.attemptMove(
+            QgsLayoutPoint(title_x, title_y, QgsUnitTypes.LayoutMillimeters)
+        )
+
+        # Añadir escala al layout
+        scale_bar = QgsLayoutItemScaleBar(layout)
+        scale_bar.setStyle("Single Box")
+        scale_bar.setLinkedMap(map)
+        scale_bar.applyDefaultSize()
+        layout.addLayoutItem(scale_bar)
+        scale_bar_x = map_x
+        scale_bar_y = map_y + map_height
+        scale_bar.attemptMove(
+            QgsLayoutPoint(scale_bar_x, scale_bar_y, QgsUnitTypes.LayoutMillimeters)
+        )
+
+        # Añadir norte al layout
+        north_arrow = QgsLayoutItemPicture(layout)
+        north_arrow.setPicturePath("C:/EasyBasin/Rasters/img/NorthArrow_04.svg")
+        layout.addLayoutItem(north_arrow)
+        # Definir tamaño del norte
+        north_arrow_width = 20
+        north_arrow_height = 20
+        north_arrow.attemptResize(
+            QgsLayoutSize(
+                north_arrow_width, north_arrow_height, QgsUnitTypes.LayoutMillimeters
+            )
+        )
+        # Posicionar el norte
+        north_arrow_x = map_x + map_width - north_arrow_width
+        north_arrow_y = map_y + 1
+        north_arrow.attemptMove(
+            QgsLayoutPoint(north_arrow_x, north_arrow_y, QgsUnitTypes.LayoutMillimeters)
+        )
+
+        # Añadir icono al layout
+        icon = QgsLayoutItemPicture(layout)
+        icon.setPicturePath("C:/EasyBasin/Rasters/img/icon.png")
+        layout.addLayoutItem(icon)
+        # Definir tamaño del icono
+        icon_width = 15  # Adjust the width as needed
+        icon_height = 15  # Adjust the height as needed
+        icon.attemptResize(
+            QgsLayoutSize(icon_width, icon_height, QgsUnitTypes.LayoutMillimeters)
+        )
+        # Posicionar el icono en la esquina superior izquierda
+        icon_x = map_x + 2
+        icon_y = map_y + 3
+        icon.attemptMove(QgsLayoutPoint(icon_x, icon_y, QgsUnitTypes.LayoutMillimeters))
 
         # Exportar mapa como imagen
         exporter = QgsLayoutExporter(layout)
@@ -852,7 +924,6 @@ class Results(QDialog, Ui_window):
             subbasin_border = QgsProject.instance().mapLayersByName("Lines")[0]
 
         # Seleccionar capa temporal y conseguir ruta
-        # subbasin_border = QgsProject.instance().mapLayersByName('Lines')[0]
         subbasin_border_path = subbasin_border.source()
 
         # Interseccion entre cuenca y cauce
@@ -1483,8 +1554,8 @@ class Results(QDialog, Ui_window):
             * ((df["LONGITUD_Cauce"] / 1000) ** (0.76))
             * ((df["PENDIENTE (%)"] / 100) ** (-0.19)),
         )
-        df["Lag Time (MIN)"] = df["TIEMPO DE CONCENTRACION (HR)"] * 60 * 0.6
-        df["Muskingum K (HR)"] = np.where(
+        df["LAG TIME (MIN)"] = df["TIEMPO DE CONCENTRACION (HR)"] * 60 * 0.6
+        df["MUSKINGUM K (HR)"] = np.where(
             df["LONGITUD_Cauce_Principal"] > df["LONGITUD_Cauce"],
             0.18
             * (
@@ -1496,7 +1567,7 @@ class Results(QDialog, Ui_window):
             * ((df["LONGITUD_Cauce"] / 1000) * (df["PENDIENTE (%)"] / 100) ** -0.25)
             ** 0.76,
         )
-        df["Muskingum X"] = (
+        df["MUSKINGUM X"] = (
             "0(Caudaloso, poca pendiente) - 0.5(Poco caudaloso, gran pendiente)"
         )
         df["AREA (KM2)"] = df["AREA"] / 1000000
@@ -1517,13 +1588,13 @@ class Results(QDialog, Ui_window):
         )
         P0 = self.comboBoxP0.currentText()
         if P0 == "Raster P0 500m (MITECO)":
-            df["UMBRAL DE ESCORRENTIA (mm)"] = df["p0_500m_MITECO"]
+            df["UMBRAL DE ESCORRENTIA INICIAL (mm)"] = df["p0_500m_MITECO"]
             df["NUMERO DE CURVA (CN)"] = df["CN_500m_MITECO"]
         if P0 == "Raster P0 100m (CLC2000)":
-            df["UMBRAL DE ESCORRENTIA (mm)"] = df["p0_100m_CLC2000"]
+            df["UMBRAL DE ESCORRENTIA INICIAL (mm)"] = df["p0_100m_CLC2000"]
             df["NUMERO DE CURVA (CN)"] = df["CN_100m_CLC2000"]
         if P0 == "Raster P0 100m (CLC2018)":
-            df["UMBRAL DE ESCORRENTIA (mm)"] = df["p0_100m_CLC2018"]
+            df["UMBRAL DE ESCORRENTIA INICIAL (mm)"] = df["p0_100m_CLC2018"]
             df["NUMERO DE CURVA (CN)"] = df["CN_100m_CLC2018"]
         df["AREA IMPERMEABLE (%)"] = df["Area_Impermeable"] / df["AREA"] * 100
         df["SUBCUENCA"] = df["SUB"]
@@ -1531,20 +1602,17 @@ class Results(QDialog, Ui_window):
             [
                 "SUBCUENCA",
                 "AREA (KM2)",
-                "LONGITUD CAUCE (KM)",
-                "COTA MAX CAUCE (msnm)",
-                "COTA MIN CAUCE (msnm)",
-                "PENDIENTE (%)",
-                "TIEMPO DE CONCENTRACION (HR)",
-                "Lag Time (MIN)",
-                "UMBRAL DE ESCORRENTIA (mm)",
                 "NUMERO DE CURVA (CN)",
                 "AREA IMPERMEABLE (%)",
-                "Muskingum K (HR)",
-                "Muskingum X",
+                "LAG TIME (MIN)",
+                "MUSKINGUM K (HR)",
+                "MUSKINGUM X",
+                "PENDIENTE (%)",
             ]
         ].copy()
         df_HMS = df_HMS.sort_values(by="SUBCUENCA")
+
+        df_HMS = df_HMS.round(2)
 
         # Pasar dataframe a CSV
         csv_HMS_path = self.folder + "/EasyBasin/HMS/inputs_HEC-HMS.csv"
@@ -1557,7 +1625,7 @@ class Results(QDialog, Ui_window):
         QgsProject.instance().removeMapLayer(intersect.id())
 
         # Aplicar metodo racional por subcuenca
-        df_MR = df_HMS[
+        df_MR = df[
             [
                 "SUBCUENCA",
                 "AREA (KM2)",
@@ -1566,7 +1634,7 @@ class Results(QDialog, Ui_window):
                 "COTA MIN CAUCE (msnm)",
                 "PENDIENTE (%)",
                 "TIEMPO DE CONCENTRACION (HR)",
-                "UMBRAL DE ESCORRENTIA (mm)",
+                "UMBRAL DE ESCORRENTIA INICIAL (mm)",
             ]
         ].copy()
 
@@ -1577,20 +1645,27 @@ class Results(QDialog, Ui_window):
         b = float(
             self.lineEdit_b.text()
         )  # Coeficiente corrector del umbral de escorrentía
+        tc = float(self.lineEditTiempo.text())  # Tiempo de concentración
+        I = float(self.lineEdit_I.text())  # Intensidad de precipitación
+        Kt = float(
+            self.lineEdit_Kt.text()
+        )  # Coeficiente de uniformidad de la precipitación
 
         # Generar variables del Metodo Racional
-        df_MR["Pd (MM)"] = Pd
+        ### Para tener en cuenta la variabilidad de la precipitacion
+        df_MR["Pd (MM)"] = Pd  # Extraer la Pd de los raster de pcpmax por subcuenca
         df_MR["KA"] = np.where(
             df_MR["AREA (KM2)"] > 1, 1 - np.log10(df_MR["AREA (KM2)"]) / 15, 1
         )
-        df_MR["Id (MM/HR)"] = df_MR["Pd (MM)"] * df_MR["KA"] / 24
-        df_MR["I1/Id"] = I1
-        df_MR["Fa"] = df_MR["I1/Id"] ** (
-            3.5287 - 2.5287 * (df_MR["TIEMPO DE CONCENTRACION (HR)"] ** 0.1)
-        )
-        df_MR["I (MM/HR)"] = df_MR["Id (MM/HR)"] * df_MR["Fa"]
+        # df_MR["Id (MM/HR)"] = df_MR["Pd (MM)"] * df_MR["KA"] / 24
+        # df_MR["I1/Id"] = I1
+        # df_MR["Fa"] = df_MR["I1/Id"] ** (
+        #     3.5287 - 2.5287 * (df_MR["TIEMPO DE CONCENTRACION (HR)"] ** 0.1)
+        # )
+        # df_MR["I (MM/HR)"] = df_MR["Id (MM/HR)"] * df_MR["Fa"]
+        df_MR["I (MM/HR)"] = I
         df_MR["b"] = b
-        df_MR["Po (MM)"] = df_MR["UMBRAL DE ESCORRENTIA (mm)"] * df_MR["b"]
+        df_MR["Po (MM)"] = df_MR["UMBRAL DE ESCORRENTIA INICIAL (mm)"] * df_MR["b"]
         df_MR["C"] = np.where(
             df_MR["Pd (MM)"] * df_MR["KA"] > df_MR["Po (MM)"],
             (
@@ -1600,13 +1675,19 @@ class Results(QDialog, Ui_window):
             / ((df_MR["Pd (MM)"] * df_MR["KA"] / df_MR["Po (MM)"] + 11) ** 2),
             0,
         )
-        df_MR["Kt"] = 1 + (df_MR["TIEMPO DE CONCENTRACION (HR)"] ** 1.25) / (
-            df_MR["TIEMPO DE CONCENTRACION (HR)"] ** 1.25 + 14
-        )
+        # df_MR["Kt"] = 1 + (df_MR["TIEMPO DE CONCENTRACION (HR)"] ** 1.25) / (
+        #     df_MR["TIEMPO DE CONCENTRACION (HR)"] ** 1.25 + 14
+        # )
+        df_MR["Kt"] = Kt
         df_MR["PERIODO RETORNO (AÑOS)"] = T
-        df_MR["QT (M3/S)"] = (
-            df_MR["Kt"] * df_MR["I (MM/HR)"] * df_MR["C"] * df_MR["AREA (KM2)"] / 3.6
+        df_MR["QT total cuenca (M3/S)"] = (
+            df_MR["Kt"].mean()
+            * df_MR["I (MM/HR)"].mean()
+            * (df_MR["C"] * df_MR["AREA (KM2)"]).sum()
+            / 3.6
         )
+
+        df_MR = df_MR.round(2)
 
         # Pasar dataframe a CSV
         csv_MR_path = self.folder + "/EasyBasin/Metodo_Racional_Subcuencas.csv"
