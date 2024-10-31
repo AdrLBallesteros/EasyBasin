@@ -1166,13 +1166,13 @@ class Results(QDialog, Ui_window):
                     try:
                         # Conseguir coordenadas del punto seleccionado INLET
                         selected = layer.selectedFeatures()
-                        geo = QgsGeometry.asPoint(selected[0].geometry())
+                        geo = QgsGeometry.asPoint(selected[1].geometry())
                         pxy = QgsPointXY(geo)
                         inlet = str(pxy.x()) + "," + str(pxy.y())
                     except:
                         # Conseguir coordenadas del punto seleccionado INLET
                         selected = layer.selectedFeatures()
-                        geo = QgsGeometry.asPoint(selected[1].geometry())
+                        geo = QgsGeometry.asPoint(selected[0].geometry())
                         pxy = QgsPointXY(geo)
                         inlet = str(pxy.x()) + "," + str(pxy.y())
 
@@ -1190,7 +1190,7 @@ class Results(QDialog, Ui_window):
                         # Extraer coordenadas X e Y
                         Xcoordinate = str(geometry.asPoint().x())
                         Ycoordinate = str(geometry.asPoint().y())
-                        break
+                        # break
                     outlet = Xcoordinate + "," + Ycoordinate
 
                     # Calcular el recorrido mas rapido desde el punto mas lejano al punto de salida
