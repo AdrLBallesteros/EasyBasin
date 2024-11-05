@@ -1038,7 +1038,7 @@ class Results(QDialog, Ui_window):
                 }
                 processing.run("native:extractbylocation", params5)
 
-                # Crear shapefile con distancia entre puntos extremos y oulet  ####Comprobar si puedo elegir la selectionada o si no extraer y guardar en un nuevo archivo
+                # Crear shapefile con distancia entre puntos extremos y oulet
                 params5 = {
                     "INPUT": outlet_path,
                     "INPUT_FIELD": "cat",
@@ -1097,20 +1097,32 @@ class Results(QDialog, Ui_window):
                     # Activar capa a editar
                     layer = QgsProject.instance().mapLayersByName("Puntos Cauces")[0]
 
-                    # Seleccionar punto de mayor longitud en el cauce
-                    fieldname = "Distance"
-                    idx = layer.fields().indexFromName(fieldname)
-                    layer.selectByExpression(
-                        fieldname + "=" + str(layer.maximumValue(idx))
-                    )
+                    # # Seleccionar punto de mayor longitud en el cauce
+                    # fieldname = "Distance"
+                    # idx = layer.fields().indexFromName(fieldname)
+                    # layer.selectByExpression(
+                    #     fieldname + "=" + str(layer.maximumValue(idx))
+                    # )
 
                     try:
+                        # Seleccionar punto de mayor longitud en el cauce
+                        fieldname = "Distance"
+                        idx = layer.fields().indexFromName(fieldname)
+                        layer.selectByExpression(
+                            fieldname + "=" + str(layer.maximumValue(idx))
+                        )
                         # Conseguir coordenadas del punto seleccionado INLET
                         selected = layer.selectedFeatures()
                         geo = QgsGeometry.asPoint(selected[0].geometry())
                         pxy = QgsPointXY(geo)
                         inlet = str(pxy.x()) + "," + str(pxy.y())
                     except:
+                        # Seleccionar punto de mayor longitud en el cauce
+                        fieldname = "Distance"
+                        idx = layer.fields().indexFromName(fieldname)
+                        layer.selectByExpression(
+                            fieldname + "=" + str(layer.maximumValue(idx))
+                        )
                         # Conseguir coordenadas del punto seleccionado INLET
                         selected = layer.selectedFeatures()
                         geo = QgsGeometry.asPoint(selected[1].geometry())
@@ -1156,20 +1168,32 @@ class Results(QDialog, Ui_window):
                     # Activar capa a editar
                     layer = QgsProject.instance().mapLayersByName("Puntos Cauces")[0]
 
-                    # Seleccionar punto de mayor longitud en el cauce
-                    fieldname = "Distance"
-                    idx = layer.fields().indexFromName(fieldname)
-                    layer.selectByExpression(
-                        fieldname + "=" + str(layer.maximumValue(idx))
-                    )
+                    # # Seleccionar punto de mayor longitud en el cauce
+                    # fieldname = "Distance"
+                    # idx = layer.fields().indexFromName(fieldname)
+                    # layer.selectByExpression(
+                    #     fieldname + "=" + str(layer.maximumValue(idx))
+                    # )
 
                     try:
+                        # Seleccionar punto de menor longitud en el cauce
+                        fieldname = "Distance"
+                        idx = layer.fields().indexFromName(fieldname)
+                        layer.selectByExpression(
+                            fieldname + "=" + str(layer.minimumValue(idx))
+                        )
                         # Conseguir coordenadas del punto seleccionado INLET
                         selected = layer.selectedFeatures()
                         geo = QgsGeometry.asPoint(selected[1].geometry())
                         pxy = QgsPointXY(geo)
                         inlet = str(pxy.x()) + "," + str(pxy.y())
                     except:
+                        # Seleccionar punto de menor longitud en el cauce
+                        fieldname = "Distance"
+                        idx = layer.fields().indexFromName(fieldname)
+                        layer.selectByExpression(
+                            fieldname + "=" + str(layer.minimumValue(idx))
+                        )
                         # Conseguir coordenadas del punto seleccionado INLET
                         selected = layer.selectedFeatures()
                         geo = QgsGeometry.asPoint(selected[0].geometry())
