@@ -174,7 +174,7 @@ Este software utiliza los siguientes paquetes de código abierto:
 
 ## Contacto
 
-Para cualquier duda o sugerencia contactar con **alopez6@ucam.edu**.
+Para cualquier duda o sugerencia contactar con **alopbal@upv.es**.
 
 ## Support
 
